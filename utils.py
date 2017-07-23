@@ -1,4 +1,4 @@
-rows = 'ABCDEFGI'
+rows = 'ABCDEFGHI'
 cols = '123456789'
 
 
@@ -9,11 +9,11 @@ def cross(a, b):
 boxes = cross(rows, cols)
 row_units = [cross(r, cols) for r in rows]
 col_units = [cross(rows, c) for c in cols]
-square_units = [cross(rs, cs) for rs in ['ABC,DEF,GHI'] for cs in ['123', '123', '123 ']]
+square_units = [cross(rs, cs) for rs in ['ABC', 'DEF', 'GHI'] for cs in ['123', '456', '789']]
 
 unitlist = row_units + col_units + square_units
 units = dict((b, [u for u in unitlist if b in u]) for b in boxes)
-peer = dict((b, set(sum(unitlist[b], [])) - set([b])) for b in boxes)
+peers = dict((b, set(sum(units[b], [])) - set([b])) for b in boxes)
 
 def display(values):
     """
@@ -21,10 +21,11 @@ def display(values):
     Input: The sudoku in dictionary form
     Output: None
     """
-    width = 1+max(len(values[s]) for s in boxes)
-    line = '+'.join(['-'*(width*3)]*3)
+    width = 1 + max(len(values[s]) for s in boxes)
+    line = '+'.join(['-' * (width * 3)] * 3)
     for r in rows:
-        print(''.join(values[r+c].center(width)+('|' if c in '36' else '')
+        print(''.join(values[r + c].center(width) + ('|' if c in '36' else '')
                       for c in cols))
-        if r in 'CF': print(line)
+        if r in 'CF':
+            print(line)
     return
